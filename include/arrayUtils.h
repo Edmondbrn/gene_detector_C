@@ -24,6 +24,17 @@ typedef struct {
  */
 DynamicArray* createArray(size_t capacity);
 
+/**
+ * Function to create an independant clone of a dynamic array
+ * 
+ * @param DynamicArray* the pointer of the array to clone
+ * @param DynamicArray* the pointer of the clone array (will be updated by the function)
+ * 
+ * @return 0 if success -1 if an error has occured
+ */
+int copy(DynamicArray* array, DynamicArray* clone);
+
+
 
 /**
  * Function to free a dynamic array structure
@@ -41,8 +52,18 @@ void freeArray(DynamicArray* array);
  */
 size_t getArraySize(const DynamicArray* array);
 
+
+/**
+ * Function to remove unused memory allocation for the dynamic array
+ * @param DynamicArray the pointer of the structure
+ * 
+ * @return 0 if success -1 if an error has occured
+ */
+int adjustCapacity(DynamicArray* array);
+
 /**
  * Function to add a new value at the end of the dynamic array
+ * If the maximum capacity has been reached, it will add 16 more spaces
  * 
  * @param DynamicArray the pointer of the structure
  * @param new_value: integer to store in teh array
@@ -50,6 +71,20 @@ size_t getArraySize(const DynamicArray* array);
  * @return 0 if success -1 if an error has occured
  */
 int appendArray(DynamicArray* array, int new_value);
+
+
+/**
+ * Function to add a new value at the end of the dynamic array
+ * If the maximum capacity has been reached, just one space will be added
+ * Use this function for rare addition in a full list
+ * 
+ * @param DynamicArray the pointer of the structure
+ * @param new_value: integer to store in teh array
+ * 
+ * @return 0 if success -1 if an error has occured
+ */
+int lazyAppendArray(DynamicArray* array, int new_value);
+
 
 /**
  * Function to increase or adapt the size of the dynamic array

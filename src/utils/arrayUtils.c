@@ -33,13 +33,35 @@ DynamicArray* createArray(size_t initial_capacity) {
     return array;
 }
 
+int copy(DynamicArray* array, DynamicArray* clone) {
+    int* clone_data = malloc(sizeof(int) * array->capacity);
+    if (clone_data == NULL)
+        return -1;
+    // copy the old data into the new one
+    memcpy(clone_data, array->data, sizeof(int) * array->size);
+    clone->capacity = array->capacity;
+    clone->size = array->size;
+    return 0;
+}
+
+
+int adjustCapacity(DynamicArray* array) {
+    int* adjust_data = malloc(sizeof(int) * array->size);
+    if (adjust_data == NULL)
+        return -1;
+    memcpy(adjust_data, array->data, sizeof(int) * array->size);
+    free(array->data);
+    array->data = adjust_data;
+    return 0;
+}
+
 
 void freeArray(DynamicArray* array) {
     free(array->data);
     free(array);
 }
 
-int getArraySize(DynamicArray* array) {
+size_t getArraySize(DynamicArray* array) {
     return array->size;
 }
 
@@ -81,6 +103,17 @@ int appendArray(DynamicArray* array, int new_value) {
     array->size ++;
     return 0;
 }
+
+int lazyAppendArray(DynamicArray* array, int new_value) {
+    const uint currentSize = array->size;
+    if (currentSize == array->capacity) // increase the capacity if the maximum has been reached
+        setMaximumCapacity(array, currentSize + 1); // the lazy addition is here
+
+    array->data[currentSize] = new_value;
+    array->size ++;
+    return 0;
+}
+
 
 
 int setArrayElement(const DynamicArray* array, size_t index, int new_value) {

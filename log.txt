@@ -1,0 +1,13 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./bin/gene_detector
+The element at the index 2 is : 42
+Array size: 6
+Array max capacity: 10
+6, 5, 42, 2, 3, 1
+Test slice array function
+Array size: 6
+Array max capacity: 6
+6, 5, 42, 2, 3, 1
+Test sort function
+Array size: 6
+Array max capacity: 6
+1, 2, 3, 5, 6, 42

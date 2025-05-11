@@ -1,23 +1,29 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <time.h>
+#include"arrayUtils.h"
 
-int getArraySize(int* array) {
-    return sizeof(array) / sizeof(array[0]);
-}
 
 
 int main(void) {
 
-    int cpt = 0;
-    int* intArr = malloc(sizeof(int) * 10);
-    while (cpt < 10) {
-        intArr[cpt] = cpt;
-        cpt ++;
-    }
-    printf("Test array 0 %i\n", intArr[0]);
-    printf("Size of array %i\n", getArraySize(intArr));
-    free(intArr);
+    DynamicArray* array = createArray(100000);
 
+    for (int i = 100000; i != 0; i-- )
+        appendArray(array, i);
+
+
+    clock_t start, end;
+    double cpu_time_used;
+    printf("Test sort function\n");
+
+    start = clock();
+    DynamicArray* sorted_array = sortArrayElement(array);
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Sort time: %f seconds\n", cpu_time_used);
+
+    freeArray(array);
 
     return 0;
 }

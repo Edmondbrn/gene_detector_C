@@ -54,6 +54,18 @@ size_t getArraySize(const DynamicArray* array);
 
 
 /**
+ * Function to slice a dynamic array to get a subpart of it
+ * 
+ * @param DynamicArray the pointer of the origin structure
+ * @param start_index the start index of the original array
+ * @param end_index the end index of the original array(not included in the sub array)
+ * 
+ * @return the pointer of the sub array (can be NULL if error)
+ */
+DynamicArray* sliceArray(const DynamicArray* array, int start_index, int end_index) ;
+
+
+/**
  * Function to remove unused memory allocation for the dynamic array
  * @param DynamicArray the pointer of the structure
  * 
@@ -71,6 +83,17 @@ int adjustCapacity(DynamicArray* array);
  * @return 0 if success -1 if an error has occured
  */
 int appendArray(DynamicArray* array, int new_value);
+
+/**
+ * Function to remove a value of the dynamic array
+ * It will remove only the first occurence of the value if it is found
+ * 
+ * @param DynamicArray the pointer of the structure
+ * @param value_to_delete: integer to store in teh array
+ * 
+ * @return 0 if success -1 if an error has occured
+ */
+int removeArray(DynamicArray* array, int value_to_delete);
 
 
 /**
@@ -120,6 +143,24 @@ int getArrayElement(const DynamicArray* array, size_t index, int* value);
  * @return 0 if success -1 if an error has occured
  */
 int setArrayElement(const DynamicArray* array, size_t index, int new_value);
+
+/**
+ * Function to sort the array element by ascending order (merge sort)
+ * 
+ * @param DynamicArray the pointer of the structure
+ * 
+ * @return 0 if success -1 if an error has occured
+ */
+DynamicArray* sortArrayElement(DynamicArray* array);
+
+
+/**
+ * Function to print the value in the dynamic array
+ * 
+ * @param DynamicArray the pointer of the structure
+ * 
+ */
+void toPrintArray(const DynamicArray* array);
 
 
 #endif

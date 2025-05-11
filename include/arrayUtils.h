@@ -155,6 +155,38 @@ DynamicArray* sortArrayElement(DynamicArray* array);
 
 
 /**
+ * Function to sort the array element by ascending order (merge sort)
+ * 
+ * @param DynamicArray the pointer of the structure
+ * @param low index of the beginning point for the sorting process
+ * @param low index of the ending point for the sorting process
+ * 
+ */
+void insertionSort(DynamicArray* array, int low, int high);
+
+/**
+ * Function to sort the array element by ascending order (merge sort)
+ * 
+ * @param array the pointer of the structure
+ * @param aux the pointer of the auxilliary array structure (tmp to store data)
+ * @param low index of the beginning point of the first sub array
+ * @param high index of the ending point of the second array
+ * 
+ */
+void mergeSort(DynamicArray* array, DynamicArray* aux, int low, int high);
+
+/**
+ * Function to merge sub arrays in one 
+ * @param array the pointer of the structure
+ * @param aux the pointer of the auxilliary array structure (tmp to store data)
+ * @param low index of the beginning point of the first sub array
+ * @param mid index of the starting point of the second array
+ * @param high index of the ending point of the first global array
+ * 
+ */
+void merge(DynamicArray* array, DynamicArray* aux, int low, int mid, int high);
+
+/**
  * Function to print the value in the dynamic array
  * 
  * @param DynamicArray the pointer of the structure

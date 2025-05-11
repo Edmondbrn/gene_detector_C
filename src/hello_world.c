@@ -9,7 +9,7 @@ int main(void) {
 
     DynamicArray* array = createArray(100000);
 
-    for (int i = 100000; i != 0; i-- )
+    for (int i = 1000; i != 0; i-- )
         appendArray(array, i);
 
 
@@ -18,7 +18,7 @@ int main(void) {
     printf("Test sort function\n");
 
     start = clock();
-    DynamicArray* sorted_array = sortArrayElement(array);
+    sortArrayElement(array);
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Sort time: %f seconds\n", cpu_time_used);

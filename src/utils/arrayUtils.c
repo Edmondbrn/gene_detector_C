@@ -162,34 +162,6 @@ int removeArray(DynamicArray* array, int value_to_delete) {
 }
 
 
-// int removeAllArray(DynamicArray* array, int value_to_delete, int resize_array) {
-//     int cpt = 0;
-//     int nbFound = 0;
-//     int size = array->size ;
-
-//     while(cpt < size) {
-
-//         if (nbFound)
-//             array->data[cpt];
-//         else if (value_to_delete == array->data[cpt])
-//             nbFound ++;
-//         cpt ++;
-//     }
-
-//     if (nbFound){
-//         array->size -= nbFound;
-//         if (resize_array) {adjustCapacity(array);} // resize the array
-//         return 0;
-//     } else {
-//         printf("The value: %i is not in the array.\n", value_to_delete);
-//         return -1;
-//     }
-
-// }
-
-
-
-
 int setArrayElement(const DynamicArray* array, size_t index, int new_value) {
     const int isIndexValid = verify_index_conformity(index, array->size);
     if (isIndexValid == -1) return -1;
@@ -238,66 +210,76 @@ DynamicArray* sliceArray(const DynamicArray* array, int start_index, int end_ind
 
 }
 
-DynamicArray* mergeArray(DynamicArray* left_part, DynamicArray* right_part, DynamicArray* tmp_array) {
-    // base case, left part empty
-    if (left_part->size == 0) {
-        for (int i = 0; i < (int) right_part->size; i++)
-            appendArray(tmp_array, right_part->data[i]);
-        return tmp_array;
-    } 
-    // base case, right part empty
-    else if (right_part->size == 0) {
-        for (int i = 0; i < (int) left_part->size; i++)
-            appendArray(tmp_array, left_part->data[i]);
-        return tmp_array;
-    } 
-    else {
-        if (left_part->data[0] < right_part->data[0]) {
-            appendArray(tmp_array, left_part->data[0]);
-            DynamicArray* new_left_part = sliceArray(left_part, 1, left_part->size);
-            DynamicArray* result = mergeArray(new_left_part, right_part, tmp_array);
-            freeArray(new_left_part); 
-            return result;
-        } 
-        else {
-            appendArray(tmp_array, right_part->data[0]);
-            DynamicArray* new_right_part = sliceArray(right_part, 1, right_part->size);
-            DynamicArray* result = mergeArray(left_part, new_right_part, tmp_array);
-            freeArray(new_right_part);
-            return result;
-        }
-    }
-}
 
 DynamicArray* sortArrayElement(DynamicArray* array) {
-
-    if ((int) array->size <= 1) // base case of the merge sort
+    
+    int high = array->size - 1;
+    int low = 0;
+    
+    if (high - low <= 15) { // tiny arrays will be sort using insert sort
+        insertionSort(array, low, high);
         return array;
-    
-
-    int middle = array->size / 2;
-    DynamicArray* tmp_array = createArray(array->size); // create a temporary array to store the sorted values
-
-    DynamicArray* left_sorted = sliceArray(array, 0, middle);
-    DynamicArray* right_sorted = sliceArray(array, middle, array->size);
-    left_sorted = sortArrayElement(left_sorted);
-    right_sorted = sortArrayElement(right_sorted);
-
-    tmp_array = mergeArray(left_sorted, right_sorted, tmp_array);
-    freeArray(left_sorted);
-    freeArray(right_sorted);
-
-    for (size_t i = 0; i < tmp_array->size; i++) {
-        array->data[i] = tmp_array->data[i];
+    } else { // merge sort otherwise
+        static DynamicArray* aux = NULL;
+        aux = createArray(array->size);
+        mergeSort(array, aux, low, high);
+        freeArray(aux);
+        aux = NULL;
     }
-    array->size = tmp_array->size;
     
-    freeArray(tmp_array);
-
     return array;
-
-
 }
+
+/**
+ * Function that will perform the merging sort
+ */
+void mergeSort(DynamicArray* array, DynamicArray* aux, int low, int high) {
+    if (high <= low) return; // base case, the array is unique and so it is sorted
+
+    int mid = low + (high - low) / 2; // fancy way to comoute the middle to avoid integer overflow
+    mergeSort(array, aux, low, mid);
+    mergeSort(array, aux, mid + 1, high);
+    merge(array, aux, low, mid, high);
+}
+
+void merge(DynamicArray* array, DynamicArray* aux, int low, int mid, int high) {
+
+    for (int k = low; k <= high; k++) // store the values in the auxilliary array
+        aux->data[k] = array->data[k];
+    
+    
+    // merging: i point to the beginning of the first array and j to the beginning of the second one
+    int i = low;
+    int j = mid + 1;
+    for (int k = low; k <= high; k++) {
+        if (i > mid) // if the first array is empty               
+            array->data[k] = aux->data[j++];
+        else if (j > high)   // if the second array is empty           
+            array->data[k] = aux->data[i++];
+        else if (aux->data[j] < aux->data[i])  // if the element of thr first array is lower than the second one
+            array->data[k] = aux->data[j++];
+        else            // the opposite                
+            array->data[k] = aux->data[i++];
+    }
+}
+
+/**
+ * Insertion sort function for the array
+ */
+void insertionSort(DynamicArray* array, int low, int high) {
+    for (int i = low + 1; i <= high; i++) {
+        int value = array->data[i]; // store the studied value 
+        int j = i;
+        
+        while (j > low && array->data[j-1] > value) {
+            array->data[j] = array->data[j-1]; // delete the value ti put the previous one if it is greater
+            j--;
+        }
+        array->data[j] = value; // restore teh original value to the correct location
+    }
+}
+
+
 
 
 

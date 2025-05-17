@@ -79,10 +79,11 @@ int adjustCapacity(DynamicArray* array);
  * 
  * @param DynamicArray the pointer of the structure
  * @param new_value: integer to store in teh array
+ * @param alloc_chunk: integer to determine how much space to add if the array is full
  * 
  * @return 0 if success -1 if an error has occured
  */
-int appendArray(DynamicArray* array, int new_value);
+int appendArray(DynamicArray* array, int new_value, int alloc_chunk);
 
 /**
  * Function to remove a value of the dynamic array

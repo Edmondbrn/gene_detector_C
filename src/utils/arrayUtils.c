@@ -4,7 +4,7 @@
 #include<string.h>
 
 typedef unsigned int uint;
-const int ALLOC_CHUNK = 16;
+const int ALLOC_CHUNK = 32;
 
 int verify_index_conformity(size_t index, int current_size) {
     if ((int) index >= current_size){
@@ -112,10 +112,10 @@ int setMaximumCapacity(DynamicArray* array, int new_capacity) {
 }
 
 
-int appendArray(DynamicArray* array, int new_value) {
+int appendArray(DynamicArray* array, int new_value, int alloc_chunk) {
     const uint currentSize = array->size;
     if (currentSize == array->capacity) // increase the capacity if the maximum has been reached
-        setMaximumCapacity(array, currentSize + ALLOC_CHUNK);
+        setMaximumCapacity(array, currentSize + alloc_chunk);
 
     array->data[currentSize] = new_value;
     array->size ++;
@@ -202,7 +202,7 @@ DynamicArray* sliceArray(const DynamicArray* array, int start_index, int end_ind
     
     else {
         for (int i = start_index; i < end_index; i++) 
-            appendArray(sub_array, array->data[i]);
+            appendArray(sub_array, array->data[i], 16);
         sub_array->size = nb_elements;
     }
     sub_array->capacity = nb_elements;

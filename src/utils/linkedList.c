@@ -84,3 +84,27 @@ void freeList(linkedList* list) {
     }
     free(list);
 }
+
+
+void toPrint(linkedList* list) {
+    printf("[");
+
+
+    Node* current_node = list->head;
+    while (current_node != NULL){
+        GenericValue value = current_node->value;
+        if (value.type == INT_TYPE)
+            printf("%i, ", value.data.intValue);
+        else if (value.type == FLOAT_TYPE)
+            printf("%f, ", value.data.floatValue);
+        else if (value.type == CHAR_TYPE)
+            printf("%c, ", value.data.charValue);
+        else if (value.type == STRING_TYPE)
+            printf("%s, ", value.data.stringValue);
+
+        current_node = current_node->next;
+    }
+    printf("]\n");
+
+
+}

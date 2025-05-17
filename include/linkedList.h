@@ -19,7 +19,7 @@ Structure to create a generic value for the linked list
  */
 typedef struct {
     ValueType type;
-    union { // allo to only store one element
+    union { // allow to only store one element
         int intValue;
         float floatValue;
         char charValue;
@@ -46,6 +46,8 @@ typedef struct {
  * @param GenericValue value: the generic value to store in the linked list
  */
 Node* createNode(GenericValue value);
+
+void toPrint(linkedList* list);
 
 
 /**

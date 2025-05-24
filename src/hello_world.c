@@ -5,6 +5,17 @@
 #include"linkedList.h"
 
 
+unsigned long hash(unsigned char *str) {
+    unsigned long hash = 5381;
+    int c;
+    
+    while ((c = *str++)) {  // Ajout de parenthèses pour éviter l'avertissement
+        printf("%i\n", c);
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    }
+    
+    return hash;
+}
 
 int main(void) {
     
@@ -50,5 +61,10 @@ int main(void) {
 
     freeList(listGeneric);
 
+    char* stringToHash = "Ara ara";
+    unsigned long hashRes = hash((unsigned char*) stringToHash);
+    printf("Hash result %lu\n", hashRes);
+
     return 0;
 }
+

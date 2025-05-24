@@ -2,31 +2,7 @@
 #define LINKED_LIST_H
 
 #include<stdlib.h>
-
-/**
-Enum to determine the type of the given argument
-*/
-typedef enum {
-    INT_TYPE,
-    FLOAT_TYPE,
-    CHAR_TYPE,
-    STRING_TYPE
-} ValueType;
-
-
-/**
-Structure to create a generic value for the linked list
- */
-typedef struct {
-    ValueType type;
-    union { // allow to only store one element
-        int intValue;
-        float floatValue;
-        char charValue;
-        char* stringValue;
-    } data;
-} GenericValue;
-
+#include"GenericValue.h"
 
 /**Structure to create a new node for a linked list
 */
@@ -47,6 +23,7 @@ typedef struct {
  */
 Node* createNode(GenericValue value);
 
+
 void toPrint(linkedList* list);
 
 
@@ -54,7 +31,7 @@ void toPrint(linkedList* list);
  * Function to create a linkedList
  * 
  */
-linkedList* createList();
+linkedList* createLinkedList();
 
 
 /**
@@ -95,8 +72,19 @@ GenericValue createStringValue(char* value);
  */
 int appendNode(linkedList* list, GenericValue value);
 
+/**
+ * Function to remove the first node containing the given value
+ * 
+ * @param list linked list pointer
+ * @param value value, the value to store the new node
+ * 
+ * @return int 0 if it is OK, 1 if no node contains the value
+ */
+int removeNode(linkedList* list, GenericValue value);
 
-void freeList(linkedList* list);
+
+
+void freeLinkedList(linkedList* list);
 
 
 #endif

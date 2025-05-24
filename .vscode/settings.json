@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "arrayutils.h": "c"
+        "arrayutils.h": "c",
+        "linkedlist.h": "c",
+        "hashmap.h": "c"
     }
 }

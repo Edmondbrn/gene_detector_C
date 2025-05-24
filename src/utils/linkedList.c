@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-linkedList* createList() {
+linkedList* createLinkedList() {
     linkedList* list = malloc(sizeof(linkedList));
 
     if (list == NULL)
@@ -72,8 +72,34 @@ int appendNode(linkedList* list, GenericValue value) {
     return 0;
 }
 
+int removeNode(linkedList* list, GenericValue value) {
 
-void freeList(linkedList* list) {
+    Node* node = list->head;
+    Node* previousNode = NULL;
+
+    while (node != NULL) {
+        GenericValue nodeValue = node->value;
+        if (compareGenericValue(nodeValue, value)) { // if the values are equals
+            if(previousNode == NULL) // case where the first node has to be removed
+                list->head = node->next;
+            else
+                previousNode->next = node->next; // attach the next node to the previous one
+            
+            if (node == list->tail)
+                list->tail = previousNode; // case where the last node has to be deleted
+            
+                free(node); // free the current node memory allocation
+            return 0;
+        }
+        previousNode = node;
+        node = node->next;
+    }
+    return 1;
+}
+
+
+
+void freeLinkedList(linkedList* list) {
 
     Node* head = list->head;
     Node* tmp = NULL;

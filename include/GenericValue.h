@@ -36,4 +36,7 @@ typedef struct {
  */
 int compareGenericValue(GenericValue a, GenericValue b);
 
+void toPrintGenericValue(GenericValue value);
+
+
 #endif

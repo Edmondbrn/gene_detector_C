@@ -11,11 +11,21 @@ typedef struct Node {
     struct Node* next;
 } Node ;
 
+typedef struct KeyValueNode {
+    GenericValue value;
+    char* key;
+    struct KeyValueNode* next;
+} KeyValueNode ;
+
 typedef struct {
     Node* head;
     Node* tail;
 } linkedList;
 
+typedef struct {
+    KeyValueNode* head;
+    KeyValueNode* tail;
+} keyValueLinkedList;
 /**
  * Function to create a Node for a linkedList
  * 
@@ -23,8 +33,17 @@ typedef struct {
  */
 Node* createNode(GenericValue value);
 
+/**
+ * Function to create a key-value Node for a linkedList
+ * 
+ * @param GenericValue value: the generic value to store in the linked list
+ * @param key the key related to the value
+ */
+KeyValueNode* createKeyValueNode(GenericValue value, char* key);
 
-void toPrint(linkedList* list);
+
+void toPrintLinkedList(linkedList* list);
+void toPrintKeyValueLinkedList(keyValueLinkedList* list);
 
 
 /**
@@ -32,6 +51,8 @@ void toPrint(linkedList* list);
  * 
  */
 linkedList* createLinkedList();
+
+keyValueLinkedList* createKeyValueLinkedList();
 
 
 /**
@@ -73,6 +94,17 @@ GenericValue createStringValue(char* value);
 int appendNode(linkedList* list, GenericValue value);
 
 /**
+ * Function to add a node to the linked list
+ * 
+ * @param list linked list pointer
+ * @param value value, the value to store the new node
+ * @param key key, the key used in hashMap process
+ * 
+ * @return int 0 if it is OK, -1 otherwise
+ */
+int appendKeyValueNode(keyValueLinkedList* list, GenericValue value, char* key);
+
+/**
  * Function to remove the first node containing the given value
  * 
  * @param list linked list pointer
@@ -82,9 +114,21 @@ int appendNode(linkedList* list, GenericValue value);
  */
 int removeNode(linkedList* list, GenericValue value);
 
+/**
+ * Function to remove a key-value node to the linked list (based on the key)
+ * 
+ * @param list linked list pointer
+ * @param key key, the key used in hashMap process
+ * 
+ * @return int 0 if it is OK, -1 otherwise
+ */
+int removeKeyValueNode(keyValueLinkedList* list, char* key);
+
 
 
 void freeLinkedList(linkedList* list);
+
+void freeKeyValueLinkedList(keyValueLinkedList* list);
 
 
 #endif

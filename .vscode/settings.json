@@ -3,6 +3,8 @@
         "stdio.h": "c",
         "arrayutils.h": "c",
         "linkedlist.h": "c",
-        "hashmap.h": "c"
+        "hashmap.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }

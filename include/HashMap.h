@@ -8,7 +8,7 @@
  */
 typedef struct {
 
-    linkedList** data; // array of linked lists
+    keyValueLinkedList** data; // array of linked lists
     size_t size;
     size_t capacity;
 
@@ -38,15 +38,26 @@ void freeHashMap(HashMap* map);
 int increaseHashMapCapacity(HashMap* map);
 
 /**
+ * Function to compute the new capacity of the hash map to avoid collision
+ */
+size_t computeNewCapacity(size_t currentCapacity);
+
+/**
  * Function to add a new value to the given HashMap structure
  */
 int putHashMap(HashMap* map, char* key, GenericValue value);
 
+/**
+ * Function to get the value stored in a hashmap thnaks to its key
+ */
+int getHashMapValue(HashMap* map, char* key, GenericValue** value_to_return);
 
 /**
  * Function to remove a value from a HashMap structure thnaks to the key
  */
 int removeHashMap(HashMap* map, char* key);
+
+void toPrintHashMap(HashMap* map);
 
 
 #endif

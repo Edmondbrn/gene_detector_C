@@ -156,6 +156,23 @@ int removeHashMap(HashMap* map, char* key) {
     return status;
 }
 
+int containsKey(HashMap* map, char* key) {
+
+    ulong index = hashCode((unsigned char*) key) % map->capacity;
+    keyValueLinkedList* valuesAtIndex = map->data[index];
+
+    if (valuesAtIndex == NULL)
+        return 0;
+    // iterate on values at this index
+    KeyValueNode* node = valuesAtIndex->head;
+    while (node != NULL) {
+        if (strcmp(node->key, key) == 0) // if the stored values at the index is the key
+            return 1;
+        node = node->next;
+    }
+    return 0;
+}
+
 void toPrintHashMap(HashMap* map) {
     printf("[");
     for (size_t i = 0; i<map->capacity; i++) {

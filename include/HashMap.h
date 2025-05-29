@@ -86,6 +86,11 @@ int removeHashMap(HashMap* map, char* key);
 
 
 /**
+ * Function to determine if a hashmap contains a given key
+ */
+int containsKey(HashMap* map, char* key);
+
+/**
  * Function to print the content of the hash map
  * @param map the pointer of the hash map structure
  */

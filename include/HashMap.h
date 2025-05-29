@@ -57,6 +57,11 @@ int getHashMapValue(HashMap* map, char* key, GenericValue** value_to_return);
  */
 int removeHashMap(HashMap* map, char* key);
 
+/**
+ * Function to determine if a hashmap contains a given key
+ */
+int containsKey(HashMap* map, char* key);
+
 void toPrintHashMap(HashMap* map);
 
 

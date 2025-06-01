@@ -6,6 +6,7 @@
         "hashmap.h": "c",
         "string.h": "c",
         "stdlib.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "genomeanalyser.h": "c"
     }
 }

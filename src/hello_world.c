@@ -28,6 +28,7 @@ int main(void) {
         return -1;
     }
     // extract the genome string
+    // TODO adjust string capcity to avoid unused ram use ?
     char* genomeString = extractGenomeFromFastaFile(file);
     fclose(file);
     if (genomeString == NULL) {
@@ -38,52 +39,73 @@ int main(void) {
 
 
 
-    // char bufferCodon[4] = "XXX\0";
-    // HashMap** geneInfo = malloc(sizeof(HashMap) * 100); // array of hashmap to store start and end index of the gene,the gene frame, the protein sequence and the gene sequence
+    char bufferCodon[4] = "XXX\0";
+    int nbCompleteGenes = 0;
+    HashMap** genesInfo = malloc(sizeof(HashMap) * 100); // array of hashmap to store start and end index of the gene,the gene frame, the protein sequence and the gene sequence
 
-    // HashMap* map = createHashMap(10);
-    // int nuclotideCount = 0;
-    // while(fgets(bufferReader, 150, file)) {
+    for (int i = 0; i < 100; i++) {
+        genesInfo[i] = NULL;
+    }
 
-        
-    //     int size = strlen(bufferReader);
-    //     for(int i = 0; i < size; i++) {
+    HashMap* nucleotideCountMap = createHashMap(10);
+    // int nucleotideCount = 0;
+    // boolean to discard sub ATG codons in the same gene
+    HashMap* frameBuilding[3] = {NULL, NULL, NULL};
+    int genomeLength = strlen(genomeString);
+    
+    for (int i = 0; i < genomeLength; i++) {
+        char nucleotide = genomeString[i];
+        updateBufferCodon(nucleotide, bufferCodon);
 
+        // count the nucleotides
+        updateNucleotideCount(nucleotideCountMap, nucleotide);
 
-    //         char nucleotide = bufferReader[i];
-    //         updateBufferCodon(nucleotide, bufferCodon);
-            
-    //         // count the nucleotides
-    //         updateNucleotideCount(map, nucleotide);
-    //         // start a new ORF if the codon = ATG
-    //         if (strcmp("ATG", bufferCodon) == 0) {
-                
-    //             int geneFrame = nuclotideCount % 3;
-    //             int geneStart = nuclotideCount + 1;
-    //             int geneLength = 3;
-    //             char orfNucl;
-    //             // finish the current file line
-    //             for (int j = i = 1; j < size; j++) {
-    //                 orfNucl = bufferReader[j];
-    //                 updateBufferCodon(orfNucl, bufferCodon); // update the codon
+        // start a new ORF if the codon = ATG
+        int frame = i % 3;
+        if (strcmp(bufferCodon, "ATG") == 0) {
+            // if we have detected a new gene in a new frame
+            if (frameBuilding[frame] == NULL) {
+                HashMap* newGeneInfo = createHashMap(10);
+                putHashMap(newGeneInfo, "start", createIntValue(i));
+                putHashMap(newGeneInfo, "frame", createIntValue(frame));
+                frameBuilding[frame] = newGeneInfo;
+            }
+        } else if (strcmp(bufferCodon, "TAA") == 0 || strcmp(bufferCodon, "TGA") == 0 || strcmp(bufferCodon, "TAG") == 0) {
 
-    //                 nuclotideCount++;
-    //                 geneLength++;
-    //             }
+            HashMap* geneInfo = frameBuilding[frame];
+            if (geneInfo == NULL)
+                continue;
+            putHashMap(geneInfo, "end", createIntValue(i));
+            genesInfo[nbCompleteGenes] = geneInfo;
+            nbCompleteGenes ++;
+            frameBuilding[frame] = NULL;
+        }
+    }
 
-
-    //         }
-    //             // extractORF(file, bufferReader, map)
-                
-    //         nuclotideCount++;
-    //     }
-    // }
-
-    // toPrintHashMap(map);
-    // freeHashMap(map);
     free(genomeString);
 
-
+    if (nbCompleteGenes == 0) {
+        printf("No complete genes detected.\n");
+        return 0;
+    }
+    
+    printf("Complete genes:\n");
+    for (int j = 0; j < nbCompleteGenes; j++) {
+        HashMap* geneMap = genesInfo[j];
+        toPrintHashMap(geneMap);
+        freeHashMap(geneMap);
+    }
+    printf("Incomplete genes:\n");
+    for (int i = 0; i < 3; i++) {
+        if (frameBuilding[i] != NULL) {
+            freeHashMap(frameBuilding[i]);
+            frameBuilding[i] = NULL;
+        }
+    }
+    printf("Nucleotide count:\n");
+    toPrintHashMap(nucleotideCountMap);
+    freeHashMap(nucleotideCountMap);
+    free(genesInfo);
     printf("\n\n\n\n");
 
     return 0;

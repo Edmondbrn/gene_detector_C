@@ -38,6 +38,7 @@ char* extractGenomeFromFastaFile(FILE *file) {
             } 
         }
     }
+    genomeString[genomeLength] = '\0';
     return genomeString;
 }
 
